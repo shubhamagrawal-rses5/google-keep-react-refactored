@@ -38,7 +38,7 @@ function SearchBar({ searchString, setSearchString }) {
         }}
       >
         <IconButton
-          icon={<span class="material-symbols-outlined">close</span>}
+          icon={<span className="material-symbols-outlined">close</span>}
           styles={{
             fontSize: "18px",
             visibility: searchString ? "visible" : "hidden",

@@ -441,12 +441,27 @@ pre {
 
 .note-modal .note-content {
   font-size: 1.1rem;
+  overflow: visible;
+  min-height: 1em;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  width: 95%;
 }
 
 .note-modal .note-title {
   font-size: 1.2rem;
 }
 
-.note-modal .note-content {
-  width: 95%;
+.note .note-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.note .note-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  line-clamp: 7;
+  -webkit-box-orient: vertical;
 }

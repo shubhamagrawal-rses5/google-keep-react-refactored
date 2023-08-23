@@ -5,25 +5,23 @@ import NoteOptions from "../elements/Note/NoteOptions";
 import { NotesContext } from "../Contexts";
 import IconButton from "../elements/IconButton";
 import NoteContentContainer from "../elements/Note/NoteContentContainer";
-import useAutosizeTextArea from "../hooks/useAutosizeTextArea";
 
 function NoteModal() {
   const { modalState, setModalState, dispatchNotes } = useContext(NotesContext);
   const { open, note } = modalState;
 
-  const { id, title, description, isPinned } = note;
+  const { id, title, description, isPinned, isCompleted } = note;
 
   const [editingNote, setEditingNote] = useState({
     id,
     title,
     description,
     isPinned,
+    isCompleted,
   });
 
-  const textAreaTitleRef = useRef(null);
+  // const textAreaTitleRef = useRef(null);
   const textAreaDescriptionRef = useRef(null);
-
-  useAutosizeTextArea(textAreaTitleRef.current, editingNote.title);
 
   function handleModalClose() {
     dispatchNotes("UPDATE_NOTE", {
@@ -42,6 +40,9 @@ function NoteModal() {
     let input = textAreaDescriptionRef.current;
     input?.focus();
   }, [textAreaDescriptionRef]);
+
+  const _title = isCompleted ? <s>{title}</s> : title;
+  const _description = isCompleted ? <s>{description}</s> : description;
 
   return open ? (
     <div>
@@ -79,7 +80,7 @@ function NoteModal() {
             data-placeholder="Title"
             className="note-content note-title"
             value={editingNote.title}
-            children={<pre data-placeholder="Title">{note.title}</pre>}
+            children={<pre data-placeholder="Title">{_title}</pre>}
             onInput={(e) => {
               setEditingNote({ ...editingNote, title: e.target.outerText });
             }}
@@ -89,7 +90,7 @@ function NoteModal() {
             data-placeholder="Note"
             className="note-content note-description"
             value={editingNote.description}
-            children={<pre data-placeholder="Note">{note.description}</pre>}
+            children={<pre data-placeholder="Note">{_description}</pre>}
             onInput={(e) =>
               setEditingNote({
                 ...editingNote,
@@ -98,7 +99,7 @@ function NoteModal() {
             }
           />
         </NoteContentContainer>
-        <NoteOptions note={editingNote} />
+        <NoteOptions note={editingNote} setNote={setEditingNote} />
       </div>
     </div>
   ) : null;

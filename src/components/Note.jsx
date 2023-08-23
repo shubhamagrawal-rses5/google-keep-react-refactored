@@ -9,7 +9,8 @@ import Tooltip from "../elements/Tooltip";
 
 function Note({ note }) {
   const { dispatchNotes, setModalState } = useContext(NotesContext);
-  const { title, description, color, isPinned, imageSRC, id } = note;
+  const { title, description, color, isPinned, imageSRC, id, isCompleted } =
+    note;
 
   function handleToggle() {
     dispatchNotes("TOGGLE_NOTE", { id: note.id });
@@ -17,6 +18,9 @@ function Note({ note }) {
   function handleNoteClick() {
     setModalState({ open: true, note: note });
   }
+
+  const _title = isCompleted ? <s>{title}</s> : title;
+  const _description = isCompleted ? <s>{description}</s> : description;
 
   return (
     <div className="note" id={`note-${id}`} style={{ backgroundColor: color }}>
@@ -41,8 +45,8 @@ function Note({ note }) {
       </div>
       <div onClick={handleNoteClick}>
         <NoteImage src={imageSRC} />
-        <NoteTitle title={title} />
-        <NoteDescription description={description} />
+        <NoteTitle title={_title} />
+        <NoteDescription description={_description} />
       </div>
       <NoteOptions note={note} />
     </div>

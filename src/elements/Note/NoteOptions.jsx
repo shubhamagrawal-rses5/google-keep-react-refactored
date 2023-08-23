@@ -5,7 +5,7 @@ import Tooltip from "../Tooltip";
 import Popover from "../Popover";
 import ColorPalette from "../../components/ColorPalette";
 
-export default function NoteOptions({ note }) {
+export default function NoteOptions({ note, setNote }) {
   const { dispatchNotes, modalState, setModalState } = useContext(NotesContext);
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -54,6 +54,22 @@ export default function NoteOptions({ note }) {
         note: { ...modalState.note, color: bgcolor },
       });
     }
+  }
+
+  function handleComplete(event) {
+    event.stopPropagation();
+
+    if (modalState.open) {
+      setModalState({
+        ...modalState,
+        note: { ...modalState.note, isCompleted: !note.isCompleted },
+      });
+    }
+    dispatchNotes("UPDATE_NOTE", {
+      id: note.id,
+      updates: { isCompleted: !note.isCompleted },
+    });
+    if (setNote) setNote({ ...note, isCompleted: !note.isCompleted });
   }
 
   useEffect(() => {
@@ -154,6 +170,28 @@ export default function NoteOptions({ note }) {
             />
           </Tooltip>
         </Popover>
+        <Tooltip
+          tooltipContent={note.isCompleted ? "Mark Undone" : "Mark as complete"}
+        >
+          <IconButton
+            icon={
+              note.isCompleted ? (
+                <span className="material-icons" style={{ fontSize: "22px" }}>
+                  check_circle
+                </span>
+              ) : (
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: "22px" }}
+                >
+                  check_circle
+                </span>
+              )
+            }
+            styles={{ fontSize: "15px" }}
+            onClick={handleComplete}
+          />{" "}
+        </Tooltip>
       </div>
     </div>
   );

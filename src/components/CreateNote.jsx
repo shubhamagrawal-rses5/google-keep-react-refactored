@@ -14,6 +14,7 @@ export const initialNote = {
   color: "white",
   imageSRC: null,
   isPinned: false,
+  isCompleted: false,
 };
 
 function CreateNoteArea() {
@@ -38,11 +39,11 @@ function CreateNoteArea() {
           <IconButton
             icon={
               creatingNote.isPinned ? (
-                <span className="material-icons" style={{ fontSize: "18px" }}>
+                <span className="material-icons" style={{ fontSize: "20px" }}>
                   turned_in
                 </span>
               ) : (
-                <span className="material-icons" style={{ fontSize: "18px" }}>
+                <span className="material-icons" style={{ fontSize: "20px" }}>
                   turned_in_not
                 </span>
               )
