@@ -2,15 +2,16 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import ContentEditableDiv from "../elements/ContentEditableDiv";
 import NoteImage from "../elements/Note/NoteImage";
 import NoteOptions from "../elements/Note/NoteOptions";
-import { NotesContext } from "../Contexts";
+import { NotesContext } from "../Contexts/NotesContextProvider";
 import IconButton from "../elements/IconButton";
 import NoteContentContainer from "../elements/Note/NoteContentContainer";
 
 function NoteModal() {
-  const { modalState, setModalState, dispatchNotes } = useContext(NotesContext);
+  const { notesState, dispatchNotesState } = useContext(NotesContext);
+  const { modalState } = notesState;
   const { open, note } = modalState;
 
-  const { id, title, description, isPinned, isCompleted } = note;
+  const { id, title, description, isPinned, isCompleted, color } = note;
 
   const [editingNote, setEditingNote] = useState({
     id,
@@ -18,17 +19,17 @@ function NoteModal() {
     description,
     isPinned,
     isCompleted,
+    color,
   });
 
-  // const textAreaTitleRef = useRef(null);
   const textAreaDescriptionRef = useRef(null);
 
   function handleModalClose() {
-    dispatchNotes("UPDATE_NOTE", {
+    dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates: editingNote,
     });
-    setModalState({ open: false, note: null });
+    dispatchNotesState("UPDATE_MODAL", { open: false, note: null });
     setEditingNote(null);
   }
 
@@ -66,16 +67,6 @@ function NoteModal() {
         />
         <NoteContentContainer>
           <NoteImage src={note.imageSRC} />
-          {/* <textarea
-            className="note-content note-title"
-            placeholder="Title"
-            value={editingNote.title}
-            style={{ height: "50px" }}
-            ref={textAreaTitleRef}
-            onChange={(e) => {
-              setEditingNote({ ...editingNote, title: e.target.value });
-            }}
-          ></textarea> */}
           <ContentEditableDiv
             data-placeholder="Title"
             className="note-content note-title"

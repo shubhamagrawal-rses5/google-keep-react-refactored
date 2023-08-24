@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Tooltip from "../elements/Tooltip";
+import { SketchPicker } from "react-color";
 
 const noteBackgroundColors = {
   white: "default",
@@ -12,8 +13,20 @@ const noteBackgroundColors = {
   "#efeff1": "Chalk",
 };
 
+const pickerStyle = {
+  default: {
+    picker: {
+      position: "absolute",
+      bottom: "30px",
+      left: "100px",
+    },
+  },
+};
+
 function ColorPalette({ selectedColor, handleSelectColor }) {
-  function handleClick(bgcolor) {
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+  function handleClick(e, bgcolor) {
+    e.stopPropagation();
     handleSelectColor(bgcolor);
   }
 
@@ -28,7 +41,7 @@ function ColorPalette({ selectedColor, handleSelectColor }) {
                 backgroundColor: color,
                 border: color === selectedColor ? "2px solid blue" : null,
               }}
-              onClick={() => handleClick(color)}
+              onClick={(e) => handleClick(e, color)}
             >
               {color === "white" && color !== selectedColor ? (
                 <span
@@ -54,6 +67,38 @@ function ColorPalette({ selectedColor, handleSelectColor }) {
           </Tooltip>
         );
       })}
+      <Tooltip tooltipContent={"Select from picker"}>
+        <button
+          className="background-color-button"
+          style={{
+            backgroundColor: "white",
+            border: !Object.keys(noteBackgroundColors).includes(selectedColor)
+              ? "2px solid blue"
+              : null,
+          }}
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsColorPickerOpen(!isColorPickerOpen);
+          }}
+        >
+          <span
+            className="material-symbols-outlined"
+            style={{ fontSize: "14px", color: "rgba(1, 1, 1, 0.7)" }}
+          >
+            colorize
+          </span>
+        </button>
+      </Tooltip>
+      {isColorPickerOpen ? (
+        <SketchPicker
+          styles={pickerStyle}
+          color={selectedColor}
+          onChange={(updatedColor, event) => {
+            event.preventDefault();
+            handleClick(event, updatedColor.hex);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 
 import IconButton from "../elements/IconButton";
 import NoteImage from "../elements/Note/NoteImage";
-import { NotesContext } from "../Contexts";
+import { NotesContext } from "../Contexts/NotesContextProvider";
 import ContentEditableDiv from "../elements/ContentEditableDiv";
 import CreateNoteOptions from "./CreateNoteOptions";
 import Tooltip from "../elements/Tooltip";
@@ -19,8 +19,8 @@ export const initialNote = {
 
 function CreateNoteArea() {
   const [creatingNote, setCreatingNote] = useState(initialNote);
-  const { isCreateAreaExpanded, setIsCreateAreaExpanded } =
-    useContext(NotesContext);
+  const { notesState, dispatchNotesState } = useContext(NotesContext);
+  const { isCreateAreaExpanded } = notesState;
 
   function handleTogglePin() {
     setCreatingNote({ ...creatingNote, isPinned: !creatingNote.isPinned });
@@ -29,7 +29,7 @@ function CreateNoteArea() {
   return (
     <div
       className="create-note-area"
-      onClick={() => setIsCreateAreaExpanded(true)}
+      onClick={() => dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", true)}
       style={{ backgroundColor: creatingNote.color }}
     >
       <div className="toggle-pin">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import useLocalStorage from "./useLocalStorage";
 
@@ -18,7 +18,7 @@ function useNotes() {
   });
   const [isCreateAreaExpanded, setIsCreateAreaExpanded] = useState(false);
 
-  const dispatchNotes = (actionType, payload) => {
+  const dispatchNotesState = (actionType, payload) => {
     let newNotes;
     switch (actionType) {
       case "CREATE_NOTE":
@@ -41,10 +41,18 @@ function useNotes() {
         newNotes = updateNote(notes, payload.id, payload.updates);
         setNotes(newNotes);
         return;
+      case "UPDATE_MODAL":
+        setModalState(payload);
+        break;
+      case "UPDATE_CREATE_AREA_VISIBILITY":
+        setIsCreateAreaExpanded(payload);
+        break;
       default:
         return;
     }
   };
+
+  const notesState = { notes, modalState, isCreateAreaExpanded };
 
   useEffect(() => {
     const createNoteArea = document.querySelector(".create-note-area");
@@ -65,14 +73,7 @@ function useNotes() {
     };
   }, []);
 
-  return {
-    notes,
-    dispatchNotes,
-    modalState,
-    setModalState,
-    isCreateAreaExpanded,
-    setIsCreateAreaExpanded,
-  };
+  return [notesState, dispatchNotesState];
 }
 
 export default useNotes;

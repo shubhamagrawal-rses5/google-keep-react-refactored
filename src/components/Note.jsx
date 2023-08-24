@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import IconButton from "../elements/IconButton";
-import { NotesContext } from "../Contexts";
+import { NotesContext } from "../Contexts/NotesContextProvider";
 import NoteImage from "../elements/Note/NoteImage";
 import NoteOptions from "../elements/Note/NoteOptions";
 import NoteTitle from "../elements/Note/NoteTitle";
@@ -8,15 +8,15 @@ import NoteDescription from "../elements/Note/NoteDescription";
 import Tooltip from "../elements/Tooltip";
 
 function Note({ note }) {
-  const { dispatchNotes, setModalState } = useContext(NotesContext);
+  const { dispatchNotesState } = useContext(NotesContext);
   const { title, description, color, isPinned, imageSRC, id, isCompleted } =
     note;
 
   function handleToggle() {
-    dispatchNotes("TOGGLE_NOTE", { id: note.id });
+    dispatchNotesState("TOGGLE_NOTE", { id: note.id });
   }
   function handleNoteClick() {
-    setModalState({ open: true, note: note });
+    dispatchNotesState("UPDATE_MODAL", { open: true, note: note });
   }
 
   const _title = isCompleted ? <s>{title}</s> : title;

@@ -11,12 +11,17 @@ function Popover({
   return (
     <div className="popover">
       <div>{children}</div>
-      <span
-        className="popover-content"
-        style={{ display: open ? "inherit" : "none", ...popoverContentStyles }}
-      >
-        {popoverContent}
-      </span>
+      {open ? (
+        <span
+          className="popover-content"
+          style={{
+            display: open ? "inherit" : "none",
+            ...popoverContentStyles,
+          }}
+        >
+          {popoverContent}
+        </span>
+      ) : null}
     </div>
   );
 }

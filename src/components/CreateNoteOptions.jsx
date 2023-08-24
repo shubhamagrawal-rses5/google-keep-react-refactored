@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { NotesContext } from "../Contexts";
+import { NotesContext } from "../Contexts/NotesContextProvider";
 import IconButton from "../elements/IconButton";
 import { initialNote } from "./CreateNote";
 import Tooltip from "../elements/Tooltip";
@@ -11,7 +11,7 @@ export default function CreateNoteOptions({
   setCreatingNote,
   ...props
 }) {
-  const { dispatchNotes, setIsCreateAreaExpanded } = useContext(NotesContext);
+  const { dispatchNotesState } = useContext(NotesContext);
 
   const [isCreatingPopoverOpen, setIsCreatingPopoverOpen] = useState(false);
 
@@ -34,11 +34,11 @@ export default function CreateNoteOptions({
       creatingNote.description ||
       creatingNote.imageSRC
     ) {
-      dispatchNotes("CREATE_NOTE", creatingNote);
+      dispatchNotesState("CREATE_NOTE", creatingNote);
     }
-    setIsCreatingPopoverOpen(false);
+    // dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", false);
     eraseAllCreateData();
-    setIsCreateAreaExpanded(false);
+    dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", false);
   }
 
   function handleDiscard() {

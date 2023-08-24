@@ -1,30 +1,34 @@
 import { useContext, useEffect, useState } from "react";
 import IconButton from "../IconButton";
-import { NotesContext } from "../../Contexts";
+import { NotesContext } from "../../Contexts/NotesContextProvider";
 import Tooltip from "../Tooltip";
 import Popover from "../Popover";
 import ColorPalette from "../../components/ColorPalette";
 
 export default function NoteOptions({ note, setNote }) {
-  const { dispatchNotes, modalState, setModalState } = useContext(NotesContext);
+  const { dispatchNotesState, notesState } = useContext(NotesContext);
+  const { modalState } = notesState;
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   function handleDelete() {
-    dispatchNotes("DELETE_NOTE", { id: note.id });
-    setModalState({ open: false, note: null });
+    dispatchNotesState("DELETE_NOTE", { id: note.id });
+    dispatchNotesState("UPDATE_MODAL", { open: false, note: null });
   }
 
   function handleDuplicate() {
-    dispatchNotes("DUPLICATE_NOTE", { id: note.id });
+    dispatchNotesState("DUPLICATE_NOTE", { id: note.id });
   }
 
   function handleUpdate(updates) {
-    dispatchNotes("UPDATE_NOTE", {
+    dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates,
     });
-    setModalState({ ...modalState, note: { ...modalState.note, ...updates } });
+    dispatchNotesState("UPDATE_MODAL", {
+      ...modalState,
+      note: { ...modalState.note, ...updates },
+    });
   }
 
   function handleFileChange(event) {
@@ -44,28 +48,29 @@ export default function NoteOptions({ note, setNote }) {
   }
 
   function handleSelectColor(bgcolor) {
-    dispatchNotes("UPDATE_NOTE", {
+    dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates: { color: bgcolor },
     });
     if (modalState.open) {
-      setModalState({
+      dispatchNotesState("UPDATE_MODAL", {
         ...modalState,
         note: { ...modalState.note, color: bgcolor },
       });
     }
+    if (setNote) setNote({ ...note, color: bgcolor });
   }
 
   function handleComplete(event) {
     event.stopPropagation();
 
     if (modalState.open) {
-      setModalState({
+      dispatchNotesState("UPDATE_MODAL", {
         ...modalState,
         note: { ...modalState.note, isCompleted: !note.isCompleted },
       });
     }
-    dispatchNotes("UPDATE_NOTE", {
+    dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates: { isCompleted: !note.isCompleted },
     });
@@ -74,9 +79,16 @@ export default function NoteOptions({ note, setNote }) {
 
   useEffect(() => {
     const noteArea = document.querySelector(`#note-${note.id}`);
+    const noteModal = document.querySelector(".note-modal");
     const outsideNoteAreaClickHandler = (event) => {
       if (document.contains(event.target) && !noteArea.contains(event.target)) {
-        if (isPopoverOpen) setIsPopoverOpen((prev) => !prev);
+        if (isPopoverOpen) {
+          if (noteModal && !noteModal.contains(event.target)) {
+            setIsPopoverOpen((prev) => !prev);
+          } else if (!noteModal) {
+            setIsPopoverOpen((prev) => !prev);
+          }
+        }
       }
     };
 

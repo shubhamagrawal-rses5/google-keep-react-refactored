@@ -4,18 +4,15 @@ import KeepLogo from "./resources/keep_logo.png";
 import SearchBar from "./components/SearchBar";
 import PageLayout, { PageLayoutSlot } from "./layouts/NotesPageLayout";
 import useNotes from "./hooks/useNotes";
-import { getSearchFilterData } from "./utils";
 import CreateNoteArea from "./components/CreateNote";
 import DisplayAllNotes from "./components/DisplayAllNotes";
-import { NotesContext } from "./Contexts";
+import { NotesContext } from "./Contexts/NotesContextProvider";
 import NoteModal from "./components/NoteModal";
 
 function App() {
   const [searchString, setSearchString] = useState("");
-  const notesState = useNotes();
-  const { notes, modalState } = notesState;
-
-  const filteredNotes = getSearchFilterData(notes, searchString);
+  const [notesState, dispatchNotesState] = useNotes();
+  const { modalState } = notesState;
 
   return (
     <div className="App">
@@ -33,19 +30,19 @@ function App() {
         </PageLayoutSlot>
 
         <PageLayoutSlot name={"header"}>
-          <NotesContext.Provider value={notesState}>
+          <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
             <CreateNoteArea />
           </NotesContext.Provider>
         </PageLayoutSlot>
 
         <PageLayoutSlot name={"main"}>
-          <NotesContext.Provider value={notesState}>
-            <DisplayAllNotes notes={filteredNotes} />
+          <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
+            <DisplayAllNotes searchString={searchString} />
           </NotesContext.Provider>
         </PageLayoutSlot>
 
         <PageLayoutSlot name={"overlay"}>
-          <NotesContext.Provider value={notesState}>
+          <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
             {modalState.open ? <NoteModal /> : null}
           </NotesContext.Provider>
         </PageLayoutSlot>
