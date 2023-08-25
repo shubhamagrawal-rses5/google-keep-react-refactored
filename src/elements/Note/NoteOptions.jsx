@@ -12,8 +12,10 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   function handleDelete() {
-    dispatchNotesState("DELETE_NOTE", { id: note.id });
-    dispatchNotesState("UPDATE_MODAL", { open: false, note: null });
+    dispatchNotesState("UPDATE_DELETE_MODAL", {
+      open: true,
+      noteId: note.id,
+    });
   }
 
   function handleDuplicate() {

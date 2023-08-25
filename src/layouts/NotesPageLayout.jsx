@@ -5,10 +5,11 @@ import { NotesContext } from "../Contexts/NotesContextProvider";
 import DisplayAllNotes from "../components/DisplayAllNotes";
 import NoteModal from "../components/NoteModal";
 import useNotes from "../hooks/useNotes";
+import DeleteModal from "../components/DeleteModal";
 
 function NotesPageLayout({ searchString }) {
   const [notesState, dispatchNotesState] = useNotes();
-  const { modalState } = notesState;
+  const { modalState, deleteModalState } = notesState;
   return (
     <PageLayout>
       <PageLayoutSlot name={"header"}>
@@ -26,6 +27,7 @@ function NotesPageLayout({ searchString }) {
       <PageLayoutSlot name={"overlay"}>
         <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
           {modalState.open ? <NoteModal /> : null}
+          {deleteModalState.open ? <DeleteModal /> : null}
         </NotesContext.Provider>
       </PageLayoutSlot>
     </PageLayout>

@@ -16,6 +16,10 @@ function useNotes() {
     open: false,
     note: null,
   });
+  const [deleteModalState, setDeleteModalState] = useState({
+    open: false,
+    noteId: null,
+  });
   const [isCreateAreaExpanded, setIsCreateAreaExpanded] = useState(false);
 
   const dispatchNotesState = (actionType, payload) => {
@@ -47,12 +51,20 @@ function useNotes() {
       case "UPDATE_CREATE_AREA_VISIBILITY":
         setIsCreateAreaExpanded(payload);
         break;
+      case "UPDATE_DELETE_MODAL":
+        setDeleteModalState(payload);
+        break;
       default:
         return;
     }
   };
 
-  const notesState = { notes, modalState, isCreateAreaExpanded };
+  const notesState = {
+    notes,
+    modalState,
+    isCreateAreaExpanded,
+    deleteModalState,
+  };
 
   useEffect(() => {
     const createNoteArea = document.querySelector(".create-note-area");
