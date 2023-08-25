@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/google-keep-react-refactored/static/css/main.0440fdd7.css",
-    "main.js": "/google-keep-react-refactored/static/js/main.f3efa6e1.js",
+    "main.css": "/google-keep-react-refactored/static/css/main.e53d6d9d.css",
+    "main.js": "/google-keep-react-refactored/static/js/main.48042469.js",
     "static/js/787.494f8886.chunk.js": "/google-keep-react-refactored/static/js/787.494f8886.chunk.js",
     "index.html": "/google-keep-react-refactored/index.html",
-    "main.0440fdd7.css.map": "/google-keep-react-refactored/static/css/main.0440fdd7.css.map",
-    "main.f3efa6e1.js.map": "/google-keep-react-refactored/static/js/main.f3efa6e1.js.map",
+    "main.e53d6d9d.css.map": "/google-keep-react-refactored/static/css/main.e53d6d9d.css.map",
+    "main.48042469.js.map": "/google-keep-react-refactored/static/js/main.48042469.js.map",
     "787.494f8886.chunk.js.map": "/google-keep-react-refactored/static/js/787.494f8886.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.0440fdd7.css",
-    "static/js/main.f3efa6e1.js"
+    "static/css/main.e53d6d9d.css",
+    "static/js/main.48042469.js"
   ]
 }
