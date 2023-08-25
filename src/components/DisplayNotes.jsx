@@ -4,12 +4,12 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
 export default function DisplayNotes({ notes, headingContent }) {
   const columnsCountBreakPoints = {
-    275: 1,
-    560: 2,
-    850: 3,
-    1150: 4,
-    1350: 5,
-    1650: 6,
+    375: 1,
+    860: 2,
+    1150: 3,
+    1450: 4,
+    1650: 5,
+    1950: 6,
   };
   return (
     <>

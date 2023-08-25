@@ -1,78 +1,35 @@
 import React from "react";
+import PageLayout, { PageLayoutSlot } from "./NotesPageLayoutComponents";
+import CreateNoteArea from "../components/CreateNote";
+import { NotesContext } from "../Contexts/NotesContextProvider";
+import DisplayAllNotes from "../components/DisplayAllNotes";
+import NoteModal from "../components/NoteModal";
+import useNotes from "../hooks/useNotes";
 
-function PageLayoutStickyHeader({ className, children, ...props }) {
-  const actualClassName = `header sticky-header ${className ?? ""}`;
+function NotesPageLayout({ searchString }) {
+  const [notesState, dispatchNotesState] = useNotes();
+  const { modalState } = notesState;
   return (
-    <div {...props} className={actualClassName}>
-      {children}
-    </div>
+    <PageLayout>
+      <PageLayoutSlot name={"header"}>
+        <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
+          <CreateNoteArea />
+        </NotesContext.Provider>
+      </PageLayoutSlot>
+
+      <PageLayoutSlot name={"main"}>
+        <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
+          <DisplayAllNotes searchString={searchString} />
+        </NotesContext.Provider>
+      </PageLayoutSlot>
+
+      <PageLayoutSlot name={"overlay"}>
+        <NotesContext.Provider value={{ notesState, dispatchNotesState }}>
+          {modalState.open ? <NoteModal /> : null}
+        </NotesContext.Provider>
+      </PageLayoutSlot>
+    </PageLayout>
   );
 }
 
-function PageLayoutHeader({ className, children, ...props }) {
-  const actualClassName = `header ${className ?? ""}`;
-  return (
-    <div {...props} className={actualClassName}>
-      {children}
-    </div>
-  );
-}
-
-function PageLayoutMain({ className, children, ...props }) {
-  const actualClassName = `main ${className ?? ""}`;
-  return (
-    <div {...props} className={actualClassName}>
-      {children}
-    </div>
-  );
-}
-
-function PageLayoutFooter({ className, children, ...props }) {
-  const actualClassName = `page-layout ${className ?? ""}`;
-  return (
-    <div {...props} className={actualClassName}>
-      {children}
-    </div>
-  );
-}
-
-function PageLayoutOverlay({ className, children, ...props }) {
-  const actualClassName = `overlay ${className ?? ""}`;
-  return (
-    <div {...props} className={actualClassName}>
-      {children}
-    </div>
-  );
-}
-
-export function PageLayoutSlot({ children, className, ...props }) {
-  return <div className="page-layout-slot">{children}</div>;
-}
-
-function PageLayout({ className, children, ...props }) {
-  const actualClassName = `page-layout ${className ?? ""}`;
-  return (
-    <div {...props} className={actualClassName}>
-      {React.Children.map(children, (child) => {
-        const childType = (child.props.name ?? "main").toUpperCase();
-        const props = child.props;
-        switch (childType) {
-          case "HEADER":
-            return <PageLayoutHeader {...props} />;
-          case "STICKY-HEADER":
-            return <PageLayoutStickyHeader {...props} />;
-          case "MAIN":
-            return <PageLayoutMain {...props} />;
-          case "FOOTER":
-            return <PageLayoutFooter {...props} />;
-          case "OVERLAY":
-            return <PageLayoutOverlay {...props} />;
-          default:
-            return null;
-        }
-      })}
-    </div>
-  );
-}
-
-export default PageLayout;
+export default NotesPageLayout;

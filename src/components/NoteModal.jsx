@@ -90,7 +90,11 @@ function NoteModal() {
             }
           />
         </NoteContentContainer>
-        <NoteOptions note={editingNote} setNote={setEditingNote} />
+        <NoteOptions
+          note={editingNote}
+          setNote={setEditingNote}
+          handleModalClose={handleModalClose}
+        />
       </div>
     </div>
   ) : null;

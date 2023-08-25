@@ -71,7 +71,7 @@ function ColorPalette({ selectedColor, handleSelectColor }) {
         <button
           className="background-color-button"
           style={{
-            backgroundColor: "white",
+            backgroundColor: selectedColor,
             border: !Object.keys(noteBackgroundColors).includes(selectedColor)
               ? "2px solid blue"
               : null,

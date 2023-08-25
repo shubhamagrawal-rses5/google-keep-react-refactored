@@ -23,7 +23,29 @@ function Note({ note }) {
   const _description = isCompleted ? <s>{description}</s> : description;
 
   return (
-    <div className="note" id={`note-${id}`} style={{ backgroundColor: color }}>
+    <div
+      className="note"
+      id={`note-${id}`}
+      style={{
+        backgroundColor: color,
+        // outline: isCompleted ? "2px solid black" : "",
+      }}
+    >
+      {isCompleted ? (
+        <span
+          className="material-icons"
+          style={{
+            fontSize: "22px",
+            position: "absolute",
+            top: "-10px",
+            left: "-10px",
+            backgroundColor: color,
+            borderRadius: "11px",
+          }}
+        >
+          check_circle
+        </span>
+      ) : null}
       <div className="toggle-pin">
         <Tooltip tooltipContent={isPinned ? "Unpin note" : "Pin note"}>
           <IconButton

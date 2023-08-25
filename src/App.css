@@ -1,6 +1,42 @@
 .App {
   position: relative;
 }
+.workspace {
+  display: flex;
+}
+
+.navbar {
+  margin: 8px 0;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  height: 90%;
+  transition: 0.2s;
+}
+
+.navbar-item {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 8px;
+  border: 1px solid transparent;
+  border-radius: 0 25px 25px 0;
+}
+
+.navbar-item:hover {
+  background-color: #f1f3f4;
+}
+
+.active,
+.navbar-item.active:hover {
+  background-color: #feefc3;
+}
+
+.page-layout {
+  margin-left: 60px;
+  flex: 1;
+}
 
 pre {
   margin: 0;
@@ -12,7 +48,7 @@ pre {
 .header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
   padding: 8px;
@@ -27,6 +63,11 @@ pre {
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
+.add-shadow {
+  box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
 .logo-container {
   display: flex;
   flex-direction: row;
@@ -36,14 +77,15 @@ pre {
   font-size: 22px;
   line-height: 24px;
   color: #5f6368;
-  width: 200px;
+  width: 190px;
 }
 
 .logo-container img {
+  display: block;
   width: 40px;
   height: 40px;
-  margin-bottom: 4px;
-  padding-right: 4px;
+  /* margin: 0 0 4px; */
+  padding-right: 0 4px 0 0;
 }
 
 .searchbar-container {
@@ -51,14 +93,14 @@ pre {
   font: normal 18px Google Sans, Roboto, Helvetica, Arial, sans-serif;
   height: 48px;
   box-sizing: border-box;
-  padding-left: 2px;
-  padding-right: 2px;
+  padding-left: 6px;
+  padding-right: 6px;
   border-radius: 8px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   flex: 1;
-  max-width: 800px;
+  max-width: 722px;
 }
 
 .searchbar-container input {
@@ -100,7 +142,7 @@ pre {
 .tooltip,
 .popover {
   position: relative;
-  display: inline-block;
+  display: inherit;
 }
 
 .tooltip .tooltip-content {
@@ -175,8 +217,8 @@ pre {
 }
 
 .create-note-area .note-description {
-  margin-bottom: 0.5rem;
-  margin-top: 0.5rem;
+  margin-bottom: 0.6rem;
+  margin-top: 0.6rem;
 }
 
 .note {
@@ -420,7 +462,7 @@ pre {
   color: rgba(0, 0, 0, 0.702);
   letter-spacing: 0.01428571em;
   font-family: Roboto, Arial, sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 550;
   line-height: 1.25rem;
   content: attr(data-placeholder);
@@ -464,4 +506,36 @@ pre {
   -webkit-line-clamp: 7;
   line-clamp: 7;
   -webkit-box-orient: vertical;
+}
+
+.note .save-button {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: white;
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: darkgrey;
+}
+.chart-area {
+  margin: 5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.barchart {
+  padding: 2rem;
+  box-shadow: 0 1px 2px 0 rgba(60, 64, 67, 0.302),
+    0 2px 6px 2px rgba(60, 64, 67, 0.149);
+  border-radius: 12px;
 }

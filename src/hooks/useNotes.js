@@ -61,15 +61,26 @@ function useNotes() {
     const outsideNoteAreaClickHandler = (event) => {
       if (
         document.contains(event.target) &&
-        !createNoteArea.contains(event.target)
+        !createNoteArea?.contains(event.target)
       ) {
-        createNoteOptions.querySelector(".save-button").click();
+        createNoteOptions?.querySelector(".save-button").click();
         setIsCreateAreaExpanded(false);
       }
     };
+    const scrollHandler = (e) => {
+      const universalHeader = document.querySelector(".sticky-header");
+      if (window.scrollY > 0) {
+        universalHeader.classList.add("add-shadow");
+      } else {
+        universalHeader.classList.remove("add-shadow");
+      }
+    };
+
+    window.addEventListener("scroll", scrollHandler);
     window.addEventListener("click", outsideNoteAreaClickHandler);
     return () => {
       window.removeEventListener("click", outsideNoteAreaClickHandler);
+      window.removeEventListener("scroll", scrollHandler);
     };
   }, []);
 

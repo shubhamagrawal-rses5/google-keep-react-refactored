@@ -5,7 +5,7 @@ import Tooltip from "../Tooltip";
 import Popover from "../Popover";
 import ColorPalette from "../../components/ColorPalette";
 
-export default function NoteOptions({ note, setNote }) {
+export default function NoteOptions({ note, setNote, handleModalClose }) {
   const { dispatchNotesState, notesState } = useContext(NotesContext);
   const { modalState } = notesState;
 
@@ -203,6 +203,13 @@ export default function NoteOptions({ note, setNote }) {
             styles={{ fontSize: "15px" }}
             onClick={handleComplete}
           />{" "}
+        </Tooltip>
+      </div>
+      <div>
+        <Tooltip tooltipContent={"Save note"}>
+          <button className="save-button" onClick={handleModalClose}>
+            Save
+          </button>
         </Tooltip>
       </div>
     </div>
