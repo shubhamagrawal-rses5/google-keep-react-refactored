@@ -49,13 +49,16 @@ export function PageLayoutSlot({ children, className, ...props }) {
   return <div className="page-layout-slot">{children}</div>;
 }
 
+// type PageLayoutProps = { className?: string; children?: React.ReactNode };
+
 function PageLayout({ className, children, ...props }) {
+  // : PageLayoutProps & React.HTMLAttributes<HTMLDivElement>
   const actualClassName = `page-layout ${className ?? ""}`;
   return (
     <div {...props} className={actualClassName}>
       {React.Children.map(children, (child) => {
-        const childType = (child.props.name ?? "main").toUpperCase();
         const props = child.props;
+        const childType = (props.name ?? "main").toUpperCase();
         switch (childType) {
           case "HEADER":
             return <PageLayoutHeader {...props} />;

@@ -1,15 +1,8 @@
+import * as React from "react";
 import { useState } from "react";
 import "./App.css";
 import KeepLogo from "./resources/keep_logo.png";
 import SearchBar from "./components/SearchBar";
-import PageLayout, {
-  PageLayoutSlot,
-} from "./layouts/NotesPageLayoutComponents";
-import useNotes from "./hooks/useNotes";
-import CreateNoteArea from "./components/CreateNote";
-import DisplayAllNotes from "./components/DisplayAllNotes";
-import { NotesContext } from "./Contexts/NotesContextProvider";
-import NoteModal from "./components/NoteModal";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UniversalHeader from "./components/UniversalHeader";
@@ -19,8 +12,8 @@ import Tooltip from "./elements/Tooltip";
 import BarChart from "./components/BarChart";
 
 function App() {
-  const [searchString, setSearchString] = useState("");
-  const [isNavbaropen, setIsNavbarOpen] = useState(false);
+  const [searchString, setSearchString] = useState<string>("");
+  const [isNavbaropen, setIsNavbarOpen] = useState<boolean>(false);
 
   return (
     <div className="App">
@@ -61,11 +54,10 @@ function App() {
           <Navbar visibility={isNavbaropen} />
           <Routes>
             <Route
-              exact
               path="/"
               element={<NotesPageLayout searchString={searchString} />}
             ></Route>
-            <Route exact path="/barchart" element={<BarChart />}></Route>
+            <Route path="/barchart" element={<BarChart />}></Route>
           </Routes>
         </Router>
       </div>

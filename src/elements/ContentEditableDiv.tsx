@@ -1,6 +1,9 @@
 import React from "react";
 
-function ContentEditableDiv({ ...props }, ref) {
+function ContentEditableDiv(
+  { ...props }: React.HTMLAttributes<HTMLDivElement>,
+  ref: any
+) {
   return (
     <div
       ref={ref}

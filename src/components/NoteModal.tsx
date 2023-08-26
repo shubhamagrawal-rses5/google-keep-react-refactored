@@ -5,15 +5,23 @@ import NoteOptions from "../elements/Note/NoteOptions";
 import { NotesContext } from "../Contexts/NotesContextProvider";
 import IconButton from "../elements/IconButton";
 import NoteContentContainer from "../elements/Note/NoteContentContainer";
+import { ID } from "../types";
 
 function NoteModal() {
   const { notesState, dispatchNotesState } = useContext(NotesContext);
   const { modalState } = notesState;
   const { open, note } = modalState;
 
-  const { id, title, description, isPinned, isCompleted, color } = note;
+  const { id, title, description, isPinned, isCompleted, color } = note!;
 
-  const [editingNote, setEditingNote] = useState({
+  const [editingNote, setEditingNote] = useState<{
+    id: ID;
+    title?: string;
+    description?: string;
+    isPinned?: boolean;
+    isCompleted?: boolean;
+    color?: string;
+  }>({
     id,
     title,
     description,
@@ -22,15 +30,14 @@ function NoteModal() {
     color,
   });
 
-  const textAreaDescriptionRef = useRef(null);
+  const textAreaDescriptionRef = useRef<HTMLDivElement>(null);
 
   function handleModalClose() {
     dispatchNotesState("UPDATE_NOTE", {
-      id: note.id,
+      id: id,
       updates: editingNote,
     });
     dispatchNotesState("UPDATE_MODAL", { open: false, note: null });
-    setEditingNote(null);
   }
 
   function handleToggle() {
@@ -48,7 +55,7 @@ function NoteModal() {
   return open ? (
     <div>
       <div className="note-modal-background" onClick={handleModalClose}></div>
-      <div className="note-modal" style={{ backgroundColor: note.color }}>
+      <div className="note-modal" style={{ backgroundColor: color }}>
         <IconButton
           icon={
             editingNote.isPinned ? (
@@ -66,26 +73,29 @@ function NoteModal() {
           className="toggle-pin"
         />
         <NoteContentContainer>
-          <NoteImage src={note.imageSRC} />
+          <NoteImage src={note?.imageSRC} />
           <ContentEditableDiv
             data-placeholder="Title"
             className="note-content note-title"
-            value={editingNote.title}
+            // value={editingNote.title}
             children={<pre data-placeholder="Title">{_title}</pre>}
-            onInput={(e) => {
-              setEditingNote({ ...editingNote, title: e.target.outerText });
+            onInput={(e: React.FormEvent<HTMLDivElement>) => {
+              setEditingNote({
+                ...editingNote,
+                title: e.currentTarget.outerText,
+              });
             }}
           />
           <ContentEditableDiv
             ref={textAreaDescriptionRef}
             data-placeholder="Note"
             className="note-content note-description"
-            value={editingNote.description}
+            // value={editingNote.description}
             children={<pre data-placeholder="Note">{_description}</pre>}
-            onInput={(e) =>
+            onInput={(e: React.FormEvent<HTMLDivElement>) =>
               setEditingNote({
                 ...editingNote,
-                description: e.target.outerText,
+                description: e.currentTarget.outerText,
               })
             }
           />

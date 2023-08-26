@@ -1,11 +1,32 @@
+import React from "react";
 import { useContext, useEffect, useState } from "react";
 import IconButton from "../IconButton";
 import { NotesContext } from "../../Contexts/NotesContextProvider";
 import Tooltip from "../Tooltip";
 import Popover from "../Popover";
 import ColorPalette from "../../components/ColorPalette";
+import { ID, Note, NoteContent } from "../../types";
 
-export default function NoteOptions({ note, setNote, handleModalClose }) {
+type NoteOptionsProps = {
+  note: Note;
+  setNote?: React.Dispatch<
+    React.SetStateAction<{
+      id: ID;
+      title?: string;
+      description?: string;
+      isPinned?: boolean;
+      isCompleted?: boolean;
+      color?: string;
+    }>
+  >;
+  handleModalClose?: () => void;
+};
+
+export default function NoteOptions({
+  note,
+  setNote,
+  handleModalClose,
+}: NoteOptionsProps) {
   const { dispatchNotesState, notesState } = useContext(NotesContext);
   const { modalState } = notesState;
 
@@ -22,34 +43,40 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
     dispatchNotesState("DUPLICATE_NOTE", { id: note.id });
   }
 
-  function handleUpdate(updates) {
+  function handleUpdate(updates: NoteContent) {
     dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates,
     });
-    dispatchNotesState("UPDATE_MODAL", {
-      ...modalState,
-      note: { ...modalState.note, ...updates },
-    });
+    if (modalState.open) {
+      dispatchNotesState("UPDATE_MODAL", {
+        ...modalState,
+        note: { ...modalState.note!, ...updates },
+      });
+    }
   }
 
-  function handleFileChange(event) {
-    const imageFile = event.target.files[0];
+  function handleFileChange(event: React.FormEvent<HTMLInputElement>) {
+    const imageFiles = event.currentTarget.files;
+    let imageFile;
+    if (imageFiles) imageFile = imageFiles[0];
     const fileReader = new FileReader();
 
-    fileReader.readAsDataURL(imageFile);
+    fileReader.readAsDataURL(imageFile as Blob);
 
     fileReader.addEventListener("load", function (e) {
-      handleUpdate({ imageSRC: e.target.result });
+      handleUpdate({ imageSRC: e.target?.result } as NoteContent);
     });
   }
 
-  function handleColorPaletteClick(event) {
+  function handleColorPaletteClick(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
     event.stopPropagation();
     setIsPopoverOpen((prev) => !prev);
   }
 
-  function handleSelectColor(bgcolor) {
+  function handleSelectColor(bgcolor: string) {
     dispatchNotesState("UPDATE_NOTE", {
       id: note.id,
       updates: { color: bgcolor },
@@ -57,19 +84,20 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
     if (modalState.open) {
       dispatchNotesState("UPDATE_MODAL", {
         ...modalState,
-        note: { ...modalState.note, color: bgcolor },
+        note: { ...modalState.note!, color: bgcolor },
       });
     }
     if (setNote) setNote({ ...note, color: bgcolor });
   }
 
-  function handleComplete(event) {
+  function handleComplete(
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
     event.stopPropagation();
-
     if (modalState.open) {
       dispatchNotesState("UPDATE_MODAL", {
         ...modalState,
-        note: { ...modalState.note, isCompleted: !note.isCompleted },
+        note: { ...modalState.note!, isCompleted: !note.isCompleted },
       });
     }
     dispatchNotesState("UPDATE_NOTE", {
@@ -82,10 +110,14 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
   useEffect(() => {
     const noteArea = document.querySelector(`#note-${note.id}`);
     const noteModal = document.querySelector(".note-modal");
-    const outsideNoteAreaClickHandler = (event) => {
-      if (document.contains(event.target) && !noteArea.contains(event.target)) {
+    const outsideNoteAreaClickHandler = (event: Event) => {
+      const { target } = event;
+      if (
+        document.contains(target as Node) &&
+        !noteArea?.contains(target as Node)
+      ) {
         if (isPopoverOpen) {
-          if (noteModal && !noteModal.contains(event.target)) {
+          if (noteModal && !noteModal.contains(target as Node)) {
             setIsPopoverOpen((prev) => !prev);
           } else if (!noteModal) {
             setIsPopoverOpen((prev) => !prev);
@@ -103,7 +135,9 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
   return (
     <div
       className="notes-options-container"
-      style={{ visibility: isPopoverOpen ? "visible" : "" }}
+      style={
+        { visibility: isPopoverOpen ? "visible" : "" } as React.CSSProperties
+      }
     >
       <div className="note-options">
         <Tooltip tooltipContent={"Delete note"}>
@@ -141,7 +175,8 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
               }
               styles={{ fontSize: "15px" }}
               onClick={(e) => {
-                e.target.parentElement.click();
+                const _target = e.target as Node;
+                _target?.parentElement?.click();
               }}
             />{" "}
           </Tooltip>
@@ -163,7 +198,7 @@ export default function NoteOptions({ note, setNote, handleModalClose }) {
         <Popover
           popoverContent={
             <ColorPalette
-              selectedColor={note.color}
+              selectedColor={note.color!}
               handleSelectColor={handleSelectColor}
             />
           }

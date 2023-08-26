@@ -1,9 +1,19 @@
+import React from "react";
 import Heading from "../elements/Heading";
+import { Note as NoteType } from "../types";
 import Note from "./Note";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 
-export default function DisplayNotes({ notes, headingContent }) {
-  const columnsCountBreakPoints = {
+type DisplayNotesProps = {
+  notes: NoteType[];
+  headingContent: React.ReactNode;
+};
+
+export default function DisplayNotes({
+  notes,
+  headingContent,
+}: DisplayNotesProps) {
+  const columnsCountBreakPoints: { [key: number]: number } = {
     375: 1,
     860: 2,
     1150: 3,

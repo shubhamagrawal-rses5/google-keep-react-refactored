@@ -2,12 +2,16 @@ import React, { useEffect } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
-function Navbar({ visibility = true }) {
+type NavbarProps = {
+  visibility: boolean;
+};
+
+function Navbar({ visibility = true }: NavbarProps) {
   const navigate = useNavigate();
   const currentRoute = useLocation().pathname;
 
   useEffect(() => {
-    const sidebar = document.querySelector(".navbar");
+    const sidebar = document.querySelector(".navbar")!;
     const main = document.querySelector(".page-layout");
     if (visibility) {
       sidebar.setAttribute("style", "width:260px");
@@ -22,10 +26,6 @@ function Navbar({ visibility = true }) {
     <div className="navbar">
       <div
         className={`navbar-item ${currentRoute === "/" ? "active" : ""}`}
-        // style={{
-        //   backgroundColor:
-        //     !visibility && currentRoute === "/" ? "none" : "#feefc3",
-        // }}
         onClick={() => navigate("/")}
       >
         <span
@@ -59,12 +59,6 @@ function Navbar({ visibility = true }) {
       <div
         className={`navbar-item
         ${currentRoute === "/barchart" ? "active" : ""}`}
-        // style={{
-        //   backgroundColor:
-        //     !visibility && currentRoute === "/barchart"
-        //       ? "transparent"
-        //       : "#feefc3",
-        // }}
         onClick={() => navigate("/barchart")}
       >
         <span

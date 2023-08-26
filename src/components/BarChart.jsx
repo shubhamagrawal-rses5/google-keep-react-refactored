@@ -3,7 +3,7 @@ import useNotes from "../hooks/useNotes";
 import { Axis, BarSeries, Tooltip, XYChart, lightTheme } from "@visx/xychart";
 
 function BarChart() {
-  const [notesState, dispatchNotesState] = useNotes();
+  const [notesState] = useNotes();
   const { notes } = notesState;
   const pinnedNotesCount = notes.filter((note) => note.isPinned).length;
   const unPinnedNotesCount = notes.filter((note) => !note.isPinned).length;

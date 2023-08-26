@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Tooltip from "../elements/Tooltip";
 import { SketchPicker } from "react-color";
 
-const noteBackgroundColors = {
+const noteBackgroundColors: { [key: string]: string } = {
   white: "default",
   "#faafa8": "Coral",
   "#fff8b8": "Sand",
@@ -16,16 +16,27 @@ const noteBackgroundColors = {
 const pickerStyle = {
   default: {
     picker: {
-      position: "absolute",
+      position: "absolute" as "absolute",
       bottom: "30px",
       left: "100px",
     },
   },
 };
 
-function ColorPalette({ selectedColor, handleSelectColor }) {
+type ColorPaletteProps = {
+  selectedColor: string;
+  handleSelectColor: (bgcolor: string) => void;
+};
+
+function ColorPalette({ selectedColor, handleSelectColor }: ColorPaletteProps) {
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
-  function handleClick(e, bgcolor) {
+
+  function handleClick(
+    e:
+      | React.MouseEvent<HTMLButtonElement, MouseEvent>
+      | React.ChangeEvent<HTMLInputElement>,
+    bgcolor: string
+  ) {
     e.stopPropagation();
     handleSelectColor(bgcolor);
   }
@@ -37,10 +48,12 @@ function ColorPalette({ selectedColor, handleSelectColor }) {
           <Tooltip key={color} tooltipContent={noteBackgroundColors[color]}>
             <button
               className="background-color-button"
-              style={{
-                backgroundColor: color,
-                border: color === selectedColor ? "2px solid blue" : null,
-              }}
+              style={
+                {
+                  backgroundColor: color,
+                  border: color === selectedColor ? "2px solid blue" : null,
+                } as React.CSSProperties
+              }
               onClick={(e) => handleClick(e, color)}
             >
               {color === "white" && color !== selectedColor ? (
@@ -70,12 +83,14 @@ function ColorPalette({ selectedColor, handleSelectColor }) {
       <Tooltip tooltipContent={"Select from picker"}>
         <button
           className="background-color-button"
-          style={{
-            backgroundColor: selectedColor,
-            border: !Object.keys(noteBackgroundColors).includes(selectedColor)
-              ? "2px solid blue"
-              : null,
-          }}
+          style={
+            {
+              backgroundColor: selectedColor,
+              border: !Object.keys(noteBackgroundColors).includes(selectedColor)
+                ? "2px solid blue"
+                : null,
+            } as React.CSSProperties
+          }
           onClick={(e) => {
             e.stopPropagation();
             setIsColorPickerOpen(!isColorPickerOpen);

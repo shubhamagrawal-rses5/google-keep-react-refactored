@@ -6,8 +6,13 @@ import NoteOptions from "../elements/Note/NoteOptions";
 import NoteTitle from "../elements/Note/NoteTitle";
 import NoteDescription from "../elements/Note/NoteDescription";
 import Tooltip from "../elements/Tooltip";
+import { Note as NoteType } from "../types";
 
-function Note({ note }) {
+type NoteProps = {
+  note: NoteType;
+};
+
+function Note({ note }: NoteProps) {
   const { dispatchNotesState } = useContext(NotesContext);
   const { title, description, color, isPinned, imageSRC, id, isCompleted } =
     note;
@@ -67,8 +72,8 @@ function Note({ note }) {
       </div>
       <div onClick={handleNoteClick}>
         <NoteImage src={imageSRC} />
-        <NoteTitle title={_title} />
-        <NoteDescription description={_description} />
+        <NoteTitle titleValue={_title} />
+        <NoteDescription descriptionValue={_description} />
       </div>
       <NoteOptions note={note} />
     </div>

@@ -7,6 +7,10 @@ import NoteModal from "../components/NoteModal";
 import useNotes from "../hooks/useNotes";
 import DeleteModal from "../components/DeleteModal";
 
+// type NotesPageLayoutProps = {
+//   searchString: string;
+// };
+
 function NotesPageLayout({ searchString }) {
   const [notesState, dispatchNotesState] = useNotes();
   const { modalState, deleteModalState } = notesState;

@@ -1,3 +1,4 @@
+import React from "react";
 import { useContext, useState } from "react";
 import { NotesContext } from "../Contexts/NotesContextProvider";
 import IconButton from "../elements/IconButton";
@@ -5,12 +6,18 @@ import { initialNote } from "./CreateNote";
 import Tooltip from "../elements/Tooltip";
 import Popover from "../elements/Popover";
 import ColorPalette from "./ColorPalette";
+import { NoteContent } from "../types";
+
+type CreateNoteOptionsProps = {
+  creatingNote: NoteContent;
+  setCreatingNote: React.Dispatch<React.SetStateAction<NoteContent>>;
+};
 
 export default function CreateNoteOptions({
   creatingNote,
   setCreatingNote,
   ...props
-}) {
+}: CreateNoteOptionsProps & React.HTMLAttributes<HTMLDivElement>) {
   const { dispatchNotesState } = useContext(NotesContext);
 
   const [isCreatingPopoverOpen, setIsCreatingPopoverOpen] = useState(false);
@@ -22,12 +29,15 @@ export default function CreateNoteOptions({
       .forEach((e) => {
         e.innerHTML = "";
       });
-    document.querySelector(".create-note-area  .note-image").innerHTML = "";
-    document.querySelector(".create-note-area  button > span").innerHTML =
-      "turned_in_not";
+    const image = document.querySelector(".create-note-area  .note-image");
+    if (image) image.innerHTML = "";
+    document
+      .querySelector(".create-note-area  button > span")
+      ?.setAttribute("innerHTML", "turned_in_not");
+    setIsCreatingPopoverOpen(false);
   }
 
-  function handleCreate(e) {
+  function handleCreate(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.stopPropagation();
     if (
       creatingNote.title ||
@@ -36,7 +46,6 @@ export default function CreateNoteOptions({
     ) {
       dispatchNotesState("CREATE_NOTE", creatingNote);
     }
-    // dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", false);
     eraseAllCreateData();
     dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", false);
   }
@@ -45,21 +54,27 @@ export default function CreateNoteOptions({
     eraseAllCreateData();
   }
 
-  function handleFileChange(event) {
-    const imageFile = event.target.files[0];
+  function handleFileChange(event: React.FormEvent<HTMLInputElement>) {
+    const imageFiles = event.currentTarget.files;
+    let imageFile;
+    if (imageFiles) imageFile = imageFiles[0];
     const fileReader = new FileReader();
 
-    fileReader.readAsDataURL(imageFile);
+    fileReader.readAsDataURL(imageFile as Blob);
 
     const targetArea = document.querySelector(".create-note-area  .note-image");
 
     fileReader.addEventListener("load", function (e) {
-      targetArea.innerHTML = `<img {...props} src=${e.target.result} alt="image-not-loaded" />`;
-      setCreatingNote({ ...creatingNote, imageSRC: e.target.result });
+      if (targetArea)
+        targetArea.innerHTML = `<img {...props} src=${e.target?.result} alt="not-loaded" />`;
+      setCreatingNote({
+        ...creatingNote,
+        imageSRC: e.target?.result,
+      } as NoteContent);
     });
   }
 
-  function handleBackgroundColor(bgcolor) {
+  function handleBackgroundColor(bgcolor: string) {
     setCreatingNote({ ...creatingNote, color: bgcolor });
   }
 
@@ -101,7 +116,8 @@ export default function CreateNoteOptions({
               }
               styles={{ fontSize: "15px" }}
               onClick={(e) => {
-                e.target.parentElement.click();
+                const _target = e.target as Node;
+                _target?.parentElement?.click();
               }}
             />
           </Tooltip>
@@ -109,7 +125,7 @@ export default function CreateNoteOptions({
         <Popover
           popoverContent={
             <ColorPalette
-              selectedColor={creatingNote.color}
+              selectedColor={creatingNote.color!}
               handleSelectColor={handleBackgroundColor}
             />
           }

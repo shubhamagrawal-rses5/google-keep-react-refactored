@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
 
-function useLocalStorage(key, initialValue) {
+function useLocalStorage<T>(
+  key: string,
+  initialValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] {
   function fetchData() {
-    const data = JSON.parse(localStorage.getItem(key));
-    if (data) return data;
-    return initialValue;
+    const unparsedData = localStorage.getItem(key);
+    if (!unparsedData) return initialValue;
+
+    const data: T = JSON.parse(unparsedData);
+    return data;
   }
 
   const [data, setData] = useState(fetchData);

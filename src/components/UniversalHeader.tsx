@@ -1,6 +1,15 @@
 import React from "react";
 
-function UniversalHeader({ className, children, ...props }) {
+export type UniversalHeaderProps = {
+  className?: string;
+  children?: React.ReactNode;
+};
+
+function UniversalHeader({
+  className,
+  children,
+  ...props
+}: UniversalHeaderProps & React.HTMLAttributes<HTMLDivElement>) {
   const actualClassName = `header sticky-header ${className ?? ""}`;
   return (
     <div {...props} className={actualClassName}>

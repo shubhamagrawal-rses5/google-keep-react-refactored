@@ -1,13 +1,16 @@
 import React from "react";
-
+type PopoverProps = {
+  open: boolean;
+  popoverContent?: React.ReactNode;
+  children?: React.ReactNode;
+  popoverContentStyles?: React.CSSProperties;
+};
 function Popover({
   open,
   popoverContent,
   children,
-  arrow = false,
   popoverContentStyles,
-  ...props
-}) {
+}: PopoverProps) {
   return (
     <div className="popover">
       <div>{children}</div>

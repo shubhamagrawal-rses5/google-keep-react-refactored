@@ -2,9 +2,14 @@ import React from "react";
 import IconButton from "../elements/IconButton";
 import Tooltip from "../elements/Tooltip";
 
-function SearchBar({ searchString, setSearchString }) {
-  function handleChange(e) {
-    setSearchString(e.target.value);
+type SearchBarProps = {
+  searchString: string;
+  setSearchString: React.Dispatch<React.SetStateAction<string>>;
+};
+
+function SearchBar({ searchString, setSearchString }: SearchBarProps) {
+  function handleChange(e: React.FormEvent<HTMLInputElement>) {
+    setSearchString(e.currentTarget.value);
   }
 
   function handleReset() {
@@ -12,7 +17,10 @@ function SearchBar({ searchString, setSearchString }) {
   }
 
   function handleSearchIconClick() {
-    document.querySelector('input[aria-label="Search"]').focus();
+    const searchBar = document.querySelector(
+      'input[aria-label="Search"]'
+    ) as HTMLElement;
+    searchBar?.focus();
   }
 
   return (

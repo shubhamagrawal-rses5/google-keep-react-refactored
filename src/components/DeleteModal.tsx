@@ -22,7 +22,7 @@ function DeleteModal() {
   }
 
   function handleConfirm() {
-    dispatchNotesState("DELETE_NOTE", { id: noteId });
+    dispatchNotesState("DELETE_NOTE", { id: noteId! });
     deleteNote();
   }
 
@@ -36,7 +36,7 @@ function DeleteModal() {
       ></div>
       <div className="delete-modal">
         <span
-          class="material-symbols-outlined"
+          className="material-symbols-outlined"
           style={{ fontSize: "48px", color: "#FA6556" }}
         >
           cancel

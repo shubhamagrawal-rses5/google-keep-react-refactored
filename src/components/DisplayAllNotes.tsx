@@ -3,7 +3,11 @@ import DisplayNotes from "./DisplayNotes";
 import { getSearchFilterData } from "../utils/index";
 import { NotesContext } from "../Contexts/NotesContextProvider";
 
-function DisplayAllNotes({ searchString }) {
+type DisplayAllNotesProps = {
+  searchString: string;
+};
+
+function DisplayAllNotes({ searchString }: DisplayAllNotesProps) {
   const { notesState } = useContext(NotesContext);
   const { notes } = notesState;
 

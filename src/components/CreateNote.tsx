@@ -7,12 +7,13 @@ import ContentEditableDiv from "../elements/ContentEditableDiv";
 import CreateNoteOptions from "./CreateNoteOptions";
 import Tooltip from "../elements/Tooltip";
 import NoteContentContainer from "../elements/Note/NoteContentContainer";
+import { NoteContent } from "../types";
 
-export const initialNote = {
+export const initialNote: NoteContent = {
   title: "",
   description: "",
   color: "white",
-  imageSRC: null,
+  imageSRC: "",
   isPinned: false,
   isCompleted: false,
 };
@@ -60,18 +61,21 @@ function CreateNoteArea() {
         <ContentEditableDiv
           data-placeholder="Title"
           className="note-content note-title"
-          onInput={(e) =>
-            setCreatingNote({ ...creatingNote, title: e.target.outerText })
+          onInput={(e: React.FormEvent<HTMLDivElement>) =>
+            setCreatingNote({
+              ...creatingNote,
+              title: e.currentTarget.outerText,
+            })
           }
           style={{ display: isCreateAreaExpanded ? "block" : "none" }}
         />
         <ContentEditableDiv
           data-placeholder="Take a note..."
           className="note-content note-description"
-          onInput={(e) =>
+          onInput={(e: React.FormEvent<HTMLDivElement>) =>
             setCreatingNote({
               ...creatingNote,
-              description: e.target.outerText,
+              description: e.currentTarget.outerText,
             })
           }
         />

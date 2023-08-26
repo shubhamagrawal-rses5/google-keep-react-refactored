@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 
+export type TooltipProps = {
+  tooltipContent?: React.ReactNode;
+  children?: React.ReactNode;
+  tooltipContentStyles?: React.CSSProperties;
+};
+
 function Tooltip({
   tooltipContent,
   children,
-  arrow = false,
   tooltipContentStyles,
-  ...props
-}) {
+}: TooltipProps) {
   const [open, setOpen] = useState(false);
   return (
     <div className="tooltip ">
