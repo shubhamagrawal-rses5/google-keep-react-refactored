@@ -6,10 +6,11 @@ import SearchBar from "./components/SearchBar";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UniversalHeader from "./components/UniversalHeader";
-import NotesPageLayout from "./layouts/NotesPageLayout";
+import NotesPageLayout from "./pages/NotesPageLayout";
 import IconButton from "./elements/IconButton";
 import Tooltip from "./elements/Tooltip";
-import BarChart from "./components/BarChart";
+import BarChart from "./pages/BarChart";
+import CompletedNotes from "./pages/CompletedNotes";
 
 function App() {
   const [searchString, setSearchString] = useState<string>("");
@@ -58,6 +59,10 @@ function App() {
               element={<NotesPageLayout searchString={searchString} />}
             ></Route>
             <Route path="/barchart" element={<BarChart />}></Route>
+            <Route
+              path="/completednotes"
+              element={<CompletedNotes searchString={searchString} />}
+            ></Route>
           </Routes>
         </Router>
       </div>

@@ -2,6 +2,11 @@ import React from "react";
 import useNotes from "../hooks/useNotes";
 import { Axis, BarSeries, Tooltip, XYChart, lightTheme } from "@visx/xychart";
 
+type DataType = {
+  x: string;
+  y: number;
+  color?: string;
+};
 function BarChart() {
   const [notesState] = useNotes();
   const { notes } = notesState;
@@ -9,15 +14,16 @@ function BarChart() {
   const unPinnedNotesCount = notes.filter((note) => !note.isPinned).length;
   const completedNotesCount = notes.filter((note) => note.isCompleted).length;
 
-  const data = [
-    { x: "Pinned Notes", y: pinnedNotesCount, color: "#f1f3f4" },
+  const data: DataType[] = [
+    { x: "Pinned Notes", y: pinnedNotesCount, color: "#FAAFA8" },
     { x: "Other Notes", y: unPinnedNotesCount, color: "#feefc3" },
     { x: "Completed Notes", y: completedNotesCount },
   ];
+
   const accessors = {
-    xAccessor: (d) => d.x,
-    yAccessor: (d) => d.y,
-    colorAccessor: (d) => d.color,
+    xAccessor: (d: DataType) => d.x,
+    yAccessor: (d: DataType) => d.y,
+    colorAccessor: (d: DataType) => d.color,
   };
 
   return (
@@ -44,9 +50,13 @@ function BarChart() {
           <Tooltip
             renderTooltip={({ tooltipData }) => (
               <div>
-                {accessors.xAccessor(tooltipData.nearestDatum.datum)}
+                {accessors.xAccessor(
+                  tooltipData?.nearestDatum?.datum as DataType
+                )}
                 {", "}
-                {accessors.yAccessor(tooltipData.nearestDatum.datum)}
+                {accessors.yAccessor(
+                  tooltipData?.nearestDatum?.datum as DataType
+                )}
               </div>
             )}
           />

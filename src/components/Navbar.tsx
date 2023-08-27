@@ -89,6 +89,40 @@ function Navbar({ visibility = true }: NavbarProps) {
           Chart
         </span>
       </div>
+      <div
+        className={`navbar-item
+        ${currentRoute === "/completednotes" ? "active" : ""}`}
+        onClick={() => navigate("/completednotes")}
+      >
+        <span
+          className="material-symbols-outlined"
+          style={{
+            fontSize: "24px",
+            padding: "12px",
+            backgroundColor:
+              !visibility && currentRoute === "/completednotes"
+                ? "#feefc3"
+                : "transparent",
+            borderRadius: "25px",
+          }}
+        >
+          tv_options_edit_channels
+        </span>
+        <span
+          style={{
+            marginLeft: "20px",
+            fontSize: "14px",
+            letterSpacing: ".01785714em",
+            fontFamily: ` "Google Sans",Roboto,Arial,sans-serif`,
+            fontWeight: "550",
+            color: "#202124",
+            display: visibility ? "inherit" : "none",
+            width: "max-content",
+          }}
+        >
+          Completed Notes
+        </span>
+      </div>
     </div>
   );
 }

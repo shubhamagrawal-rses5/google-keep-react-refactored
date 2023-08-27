@@ -1,5 +1,7 @@
 import React from "react";
-import PageLayout, { PageLayoutSlot } from "./NotesPageLayoutComponents";
+import PageLayout, {
+  PageLayoutSlot,
+} from "../layouts/NotesPageLayoutComponents";
 import CreateNoteArea from "../components/CreateNote";
 import { NotesContext } from "../Contexts/NotesContextProvider";
 import DisplayAllNotes from "../components/DisplayAllNotes";
@@ -7,11 +9,11 @@ import NoteModal from "../components/NoteModal";
 import useNotes from "../hooks/useNotes";
 import DeleteModal from "../components/DeleteModal";
 
-// type NotesPageLayoutProps = {
-//   searchString: string;
-// };
+type NotesPageLayoutProps = {
+  searchString: string;
+};
 
-function NotesPageLayout({ searchString }) {
+function NotesPageLayout({ searchString }: NotesPageLayoutProps) {
   const [notesState, dispatchNotesState] = useNotes();
   const { modalState, deleteModalState } = notesState;
   return (
