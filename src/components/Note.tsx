@@ -36,8 +36,14 @@ function Note({ note }: NoteProps) {
         // outline: isCompleted ? "2px solid black" : "",
       }}
     >
+      <div onClick={handleNoteClick}>
+        <NoteImage src={imageSRC} noteId={id} />
+        <NoteTitle titleValue={_title} />
+        <NoteDescription descriptionValue={_description} />
+      </div>
+      <NoteOptions note={note} />
       {isCompleted ? (
-        <span
+        <div
           className="material-icons"
           style={{
             fontSize: "22px",
@@ -49,7 +55,7 @@ function Note({ note }: NoteProps) {
           }}
         >
           check_circle
-        </span>
+        </div>
       ) : null}
       <div className="toggle-pin">
         <Tooltip tooltipContent={isPinned ? "Unpin note" : "Pin note"}>
@@ -70,12 +76,6 @@ function Note({ note }: NoteProps) {
           />
         </Tooltip>{" "}
       </div>
-      <div onClick={handleNoteClick}>
-        <NoteImage src={imageSRC} />
-        <NoteTitle titleValue={_title} />
-        <NoteDescription descriptionValue={_description} />
-      </div>
-      <NoteOptions note={note} />
     </div>
   );
 }

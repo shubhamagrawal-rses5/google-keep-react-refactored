@@ -1,4 +1,5 @@
 export type ID = string | number;
+
 export type NoteContent = {
   title?: string;
   description?: string;

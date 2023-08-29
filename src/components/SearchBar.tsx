@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import IconButton from "../elements/IconButton";
 import Tooltip from "../elements/Tooltip";
 
@@ -8,6 +8,8 @@ type SearchBarProps = {
 };
 
 function SearchBar({ searchString, setSearchString }: SearchBarProps) {
+  const searchBarRef = useRef<HTMLInputElement | null>(null);
+
   function handleChange(e: React.FormEvent<HTMLInputElement>) {
     setSearchString(e.currentTarget.value);
   }
@@ -17,10 +19,7 @@ function SearchBar({ searchString, setSearchString }: SearchBarProps) {
   }
 
   function handleSearchIconClick() {
-    const searchBar = document.querySelector(
-      'input[aria-label="Search"]'
-    ) as HTMLElement;
-    searchBar?.focus();
+    searchBarRef.current?.focus();
   }
 
   return (
@@ -33,6 +32,7 @@ function SearchBar({ searchString, setSearchString }: SearchBarProps) {
         />
       </Tooltip>
       <input
+        ref={searchBarRef}
         aria-label="Search"
         placeholder="Search"
         type="text"

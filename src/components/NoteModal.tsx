@@ -73,7 +73,7 @@ function NoteModal() {
           className="toggle-pin"
         />
         <NoteContentContainer>
-          <NoteImage src={note?.imageSRC} />
+          <NoteImage src={note?.imageSRC} noteId={id} />
           <ContentEditableDiv
             data-placeholder="Title"
             className="note-content note-title"

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 import IconButton from "../elements/IconButton";
 import NoteImage from "../elements/Note/NoteImage";
@@ -22,6 +22,33 @@ function CreateNoteArea() {
   const [creatingNote, setCreatingNote] = useState(initialNote);
   const { notesState, dispatchNotesState } = useContext(NotesContext);
   const { isCreateAreaExpanded } = notesState;
+  const createNoteAreaRef = useRef<HTMLDivElement | null>(null);
+  const createNoteOptionsRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const createNoteArea = createNoteAreaRef.current;
+    const createNoteOptions = createNoteOptionsRef.current;
+
+    const outsideNoteAreaClickHandler = (event: Event) => {
+      const { target } = event;
+      if (
+        document.contains(target as Node) &&
+        !createNoteArea?.contains(target as Node)
+      ) {
+        const saveButton = createNoteOptions?.querySelector(
+          ".save-button"
+        ) as HTMLElement;
+
+        saveButton?.click();
+        dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", false);
+      }
+    };
+
+    window.addEventListener("click", outsideNoteAreaClickHandler);
+    return () => {
+      window.removeEventListener("click", outsideNoteAreaClickHandler);
+    };
+  }, []);
 
   function handleTogglePin() {
     setCreatingNote({ ...creatingNote, isPinned: !creatingNote.isPinned });
@@ -29,6 +56,7 @@ function CreateNoteArea() {
 
   return (
     <div
+      ref={createNoteAreaRef}
       className="create-note-area"
       onClick={() => dispatchNotesState("UPDATE_CREATE_AREA_VISIBILITY", true)}
       style={{ backgroundColor: creatingNote.color }}
@@ -81,6 +109,7 @@ function CreateNoteArea() {
         />
       </NoteContentContainer>
       <CreateNoteOptions
+        ref={createNoteOptionsRef}
         className="create-note-options"
         creatingNote={creatingNote}
         setCreatingNote={setCreatingNote}

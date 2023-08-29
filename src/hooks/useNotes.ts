@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import useLocalStorage from "./useLocalStorage";
 
 import {
   createNote,
   deleteNote,
+  deleteNoteImage,
   duplicateNote,
   toggleNote,
   updateNote,
@@ -23,6 +24,7 @@ import {
   ToggleNotePayload,
   NotesState,
   NotesDispatch,
+  DeleteNoteImagePayload,
 } from "../types/hooks";
 
 function useNotes(): [NotesState, NotesDispatch] {
@@ -66,6 +68,12 @@ function useNotes(): [NotesState, NotesDispatch] {
         setNotes(newNotes);
         return;
       }
+      case "DELETE_NOTE_IMAGE": {
+        const { id } = payload as DeleteNoteImagePayload;
+        newNotes = deleteNoteImage(notes, id);
+        setNotes(newNotes);
+        return;
+      }
       case "UPDATE_NOTE": {
         const { id, updates } = payload as UpdateNotePayload;
         newNotes = updateNote(notes, id, updates);
@@ -92,41 +100,6 @@ function useNotes(): [NotesState, NotesDispatch] {
     isCreateAreaExpanded,
     deleteModalState,
   };
-
-  useEffect(() => {
-    const createNoteArea = document.querySelector(".create-note-area");
-    const createNoteOptions = document.querySelector(".create-note-options");
-
-    const outsideNoteAreaClickHandler = (event: Event) => {
-      const { target } = event;
-      if (
-        document.contains(target as Node) &&
-        !createNoteArea?.contains(target as Node)
-      ) {
-        const saveButton = createNoteOptions?.querySelector(
-          ".save-button"
-        ) as HTMLElement;
-
-        saveButton?.click();
-        setIsCreateAreaExpanded(false);
-      }
-    };
-    const scrollHandler = () => {
-      const universalHeader = document.querySelector(".sticky-header")!;
-      if (window.scrollY > 0) {
-        universalHeader.classList.add("add-shadow");
-      } else {
-        universalHeader.classList.remove("add-shadow");
-      }
-    };
-
-    window.addEventListener("scroll", scrollHandler);
-    window.addEventListener("click", outsideNoteAreaClickHandler);
-    return () => {
-      window.removeEventListener("click", outsideNoteAreaClickHandler);
-      window.removeEventListener("scroll", scrollHandler);
-    };
-  }, []);
 
   return [notesState, dispatchNotesState];
 }

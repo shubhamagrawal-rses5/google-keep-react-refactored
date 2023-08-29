@@ -13,11 +13,14 @@ type CreateNoteOptionsProps = {
   setCreatingNote: React.Dispatch<React.SetStateAction<NoteContent>>;
 };
 
-export default function CreateNoteOptions({
-  creatingNote,
-  setCreatingNote,
-  ...props
-}: CreateNoteOptionsProps & React.HTMLAttributes<HTMLDivElement>) {
+function CreateNoteOptions(
+  {
+    creatingNote,
+    setCreatingNote,
+    ...props
+  }: CreateNoteOptionsProps & React.HTMLAttributes<HTMLDivElement>,
+  ref: any
+) {
   const { dispatchNotesState } = useContext(NotesContext);
 
   const [isCreatingPopoverOpen, setIsCreatingPopoverOpen] = useState(false);
@@ -26,8 +29,8 @@ export default function CreateNoteOptions({
     setCreatingNote(initialNote);
     document
       .querySelectorAll(".create-note-area div[contenteditable=true]")
-      .forEach((e) => {
-        e.innerHTML = "";
+      .forEach((element) => {
+        element.innerHTML = "";
       });
     const image = document.querySelector(".create-note-area  .note-image");
     if (image) image.innerHTML = "";
@@ -79,7 +82,7 @@ export default function CreateNoteOptions({
   }
 
   return (
-    <div className="notes-options-container" {...props}>
+    <div className="notes-options-container" {...props} ref={ref}>
       <div className="note-options">
         <Tooltip tooltipContent={"Discard note"}>
           <IconButton
@@ -159,3 +162,5 @@ export default function CreateNoteOptions({
     </div>
   );
 }
+
+export default React.forwardRef(CreateNoteOptions);

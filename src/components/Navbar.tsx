@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -10,20 +10,18 @@ function Navbar({ visibility = true }: NavbarProps) {
   const navigate = useNavigate();
   const currentRoute = useLocation().pathname;
 
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
-    const sidebar = document.querySelector(".navbar")!;
-    const main = document.querySelector(".page-layout");
     if (visibility) {
-      sidebar.setAttribute("style", "width:260px");
-      main?.setAttribute("style", "margin-left:270px");
+      sidebarRef.current?.setAttribute("style", "width:260px");
     } else {
-      sidebar.setAttribute("style", "width:58px");
-      main?.setAttribute("style", "margin-left:60px");
+      sidebarRef.current?.setAttribute("style", "width:58px");
     }
   }, [visibility]);
 
   return (
-    <div className="navbar">
+    <div className="navbar" ref={sidebarRef}>
       <div
         className={`navbar-item ${currentRoute === "/" ? "active" : ""}`}
         onClick={() => navigate("/")}

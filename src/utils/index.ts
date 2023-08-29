@@ -3,8 +3,8 @@ import { ID, Note, NoteContent } from "../types";
 export function getSearchFilterData(notes: Note[], filterString: string) {
   const filteredData = notes.filter(
     (item) =>
-      item.title?.includes(filterString) ||
-      item.description?.includes(filterString)
+      item.title?.toLowerCase().includes(filterString.toLowerCase()) ||
+      item.description?.toLowerCase().includes(filterString)
   );
   return filteredData;
 }
@@ -52,6 +52,18 @@ export function toggleNote(notes: Note[], noteId: ID) {
     const notesCopy = updateNote(notes, noteId, {
       ...noteToBeToggled,
       isPinned: !noteToBeToggled.isPinned,
+    });
+    return notesCopy;
+  }
+  return notes;
+}
+
+export function deleteNoteImage(notes: Note[], noteId: ID) {
+  const noteToBeToggled = getTargetNote(notes, noteId);
+  if (noteToBeToggled) {
+    const notesCopy = updateNote(notes, noteId, {
+      ...noteToBeToggled,
+      imageSRC: "",
     });
     return notesCopy;
   }
